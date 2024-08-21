@@ -3,6 +3,37 @@ import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
 import numpy
+import serial 
+import serial.tools.list_ports
+
+ports = serial.tools.list_ports.comports()
+serialInst = serial.Serial()
+
+portsList = []
+
+for onePort in ports:
+    portsList.append(str(onePort))
+    print(str(onePort))
+    
+
+portVar = None
+for x in range(0, len(portsList)):
+    if portsList[x].startswith("COM" + str(val)):
+        portVar = "COM" + str(val)
+        print(portVar)
+        
+
+if portVar is None:
+    print("Selected port is not available.")
+    exit()
+
+try:
+    serialInst.baudrate = 2400
+    serialInst.port = portVar
+    serialInst.open()
+except Exception as e:
+    print(f"Error opening serial port: {e}")
+    exit()
 
 
 def update_frames():
@@ -21,12 +52,16 @@ def update_frames():
        
         
         frame2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        
         height, width = frame2.shape[:2]
-        new_height, new_width = (height // 100, width // 100)
+        
+        new_height, new_width = (height // 150, width // 150)
 
         frame2 = cv2.resize(frame2, 
                            (new_width, new_height),
                            interpolation=cv2.INTER_LINEAR)
+        
+        print(frame2.flatten())
         
         frame2 = cv2.resize(frame2, 
                            (width, height),
