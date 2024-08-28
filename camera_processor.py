@@ -38,7 +38,9 @@ def update_frames():
                            (new_width, new_height),
                            interpolation=cv2.INTER_LINEAR)
         data = frame2.flatten()
-        data = [str(x) for x in data]
+        for i in range(len(data)): 
+            data[i] ="0"*(3 - len(data[i])) + str(data[i])
+            
         data = "/".join(data)
         send_data(bytes(data,"utf-8"))
         
