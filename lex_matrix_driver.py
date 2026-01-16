@@ -39,9 +39,10 @@ void processing(char* data){
 
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(9600); 
 
-  // row initialization
+
+ 
   pinMode(rowPins[0],OUTPUT);
   pinMode(rowPins[1],OUTPUT);
   pinMode(rowPins[2],OUTPUT);
@@ -49,7 +50,6 @@ void setup() {
   digitalWrite(rowPins[1],LOW);
   digitalWrite(rowPins[2],LOW);
 
-  //column initialization
   pinMode(columnPins[0],OUTPUT); 
   pinMode(columnPins[1],OUTPUT);
   pinMode(columnPins[2],OUTPUT);
@@ -67,7 +67,7 @@ void loop() {
     if (Serial.read() == '/'){
   
     index = 0; 
-    while(index <= dataLength  * 3){ 
+    while(index < dataLength * 3){ 
        if (Serial.available()){ 
       incomingData[index] = Serial.read(); 
       index++; 
@@ -80,9 +80,9 @@ void loop() {
       processing(incomingData); 
   
 
-  for(int i = 0; i < dataLength-2;i+3){
+  for(int i = 0; i < dataLength-2;i += 3){
     int data[] = {pixelData[i],pixelData[i+1],pixelData[i+2]};
-    writeColumn(data,i);
+    writeColumn(data,i/3);
     delay(2);}}
 
     
